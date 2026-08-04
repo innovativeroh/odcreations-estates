@@ -2,18 +2,19 @@
 # Install:  sudo cp deploy/caddy/bookyourvisit.caddy /etc/caddy/sites/
 #           (and ensure /etc/caddy/Caddyfile has: import sites/*)
 #
-# Origin is behind the Cloudflare proxy (orange cloud), so Caddy's automatic
-# Let's Encrypt issuance cannot complete -- CF intercepts the ACME challenge.
-# The explicit `tls` directive uses a Cloudflare Origin Certificate instead,
-# which disables auto-issuance for these sites. CF SSL mode: Full (strict).
+# Origin is behind the Cloudflare proxy (orange cloud), so Caddy's own ACME
+# issuance cannot complete -- CF terminates TLS, breaking TLS-ALPN-01.
+# Certs come from certbot via DNS-01 instead (see deploy/caddy/README.md).
+# The explicit `tls` directive disables Caddy's auto-issuance for these sites.
+# CF SSL mode: Full (strict).
 
-(cf_origin_tls) {
-	tls /etc/ssl/cloudflare/samarthh.me.pem /etc/ssl/cloudflare/samarthh.me.key
+(le_tls) {
+	tls /etc/letsencrypt/live/samarthh.me/fullchain.pem /etc/letsencrypt/live/samarthh.me/privkey.pem
 }
 
 # API -> estates-backend :7410
 bookyourvisit-api.samarthh.me {
-	import cf_origin_tls
+	import le_tls
 
 	# R2 image uploads; express.json limit is 10mb
 	request_body {
@@ -25,13 +26,13 @@ bookyourvisit-api.samarthh.me {
 
 # Public site -> estates-webfront :7411
 bookyourvisit.samarthh.me {
-	import cf_origin_tls
+	import le_tls
 	reverse_proxy 127.0.0.1:7411
 }
 
 # Admin -> estates-admin :7412
 bookyourvisit-admin.samarthh.me {
-	import cf_origin_tls
+	import le_tls
 
 	request_body {
 		max_size 12MB
