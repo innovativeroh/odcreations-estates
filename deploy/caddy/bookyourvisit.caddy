@@ -3,18 +3,22 @@
 #           (and ensure /etc/caddy/Caddyfile has: import sites/*)
 #
 # Origin is behind the Cloudflare proxy (orange cloud), so Caddy's own ACME
-# issuance cannot complete -- CF terminates TLS, breaking TLS-ALPN-01.
-# Certs come from certbot via DNS-01 instead (see deploy/caddy/README.md).
-# The explicit `tls` directive disables Caddy's auto-issuance for these sites.
-# CF SSL mode: Full (strict).
-
-(le_tls) {
-	tls /etc/letsencrypt/live/samarthh.me/fullchain.pem /etc/letsencrypt/live/samarthh.me/privkey.pem
+# issuance cannot complete -- CF terminates TLS, breaking TLS-ALPN-01. The
+# symptom is a Cloudflare 525 SSL handshake failed.
+#
+# ponytail: `tls internal` = Caddy's self-signed cert. Cloudflare is the only
+# client on this hop and CF SSL mode "Full" does not verify it, so this is
+# enough to get encrypted CF<->origin traffic with zero cert plumbing.
+# Upgrade path: swap to a Cloudflare Origin Certificate (15-year, free) or a
+# certbot DNS-01 wildcard, then set CF SSL mode to "Full (strict)".
+# See README.md.
+(origin_tls) {
+	tls internal
 }
 
 # API -> estates-backend :7410
 bookyourvisit-api.samarthh.me {
-	import le_tls
+	import origin_tls
 
 	# R2 image uploads; express.json limit is 10mb
 	request_body {
@@ -26,13 +30,13 @@ bookyourvisit-api.samarthh.me {
 
 # Public site -> estates-webfront :7411
 bookyourvisit.samarthh.me {
-	import le_tls
+	import origin_tls
 	reverse_proxy 127.0.0.1:7411
 }
 
 # Admin -> estates-admin :7412
 bookyourvisit-admin.samarthh.me {
-	import le_tls
+	import origin_tls
 
 	request_body {
 		max_size 12MB
