@@ -1,77 +1,23 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  FiTruck, 
-  FiFileText, 
-  FiLayout, 
-  FiCamera, 
-  FiGlobe, 
   FiArrowUpRight,
   FiStar,
   FiZap
 } from "react-icons/fi";
-import { FaPaintRoller } from "react-icons/fa6";
-
-const SERVICES = [
-  {
-    id: "packers-movers",
-    title: "Packers & Movers",
-    subtitle: "Safe, insured & hassle-free home relocation",
-    badge: "New Offers",
-    badgeType: "accent",
-    icon: FiTruck,
-    href: "/contact?service=packers-movers"
-  },
-  {
-    id: "rental-agreement",
-    title: "Rental Agreement",
-    subtitle: "Digital legal agreement with instant e-stamping",
-    badge: "Instant E-Stamp",
-    badgeType: "dark",
-    icon: FiFileText,
-    href: "/contact?service=rental-agreement"
-  },
-  {
-    id: "painting-cleaning",
-    title: "Painting & Cleaning",
-    subtitle: "Professional deep home cleaning & fresh wall paint",
-    badge: "Top Rated",
-    badgeType: "dark",
-    icon: FaPaintRoller,
-    href: "/contact?service=painting-cleaning"
-  },
-  {
-    id: "interior-designers",
-    title: "Interior Designers",
-    subtitle: "Turnkey luxury interiors, modular kitchens & 3D space planning",
-    badge: "Free 3D Consult",
-    badgeType: "dark",
-    icon: FiLayout,
-    href: "/contact?service=interior-designers"
-  },
-  {
-    id: "click-earn",
-    title: "Click & Earn",
-    subtitle: "Post neighborhood property photos & win rewards",
-    badge: "New",
-    badgeType: "accent",
-    icon: FiCamera,
-    href: "/contact?service=click-earn"
-  },
-  {
-    id: "nri-services",
-    title: "Estates for NRIs",
-    subtitle: "Dedicated property management & remote rental management",
-    badge: "NRI Special",
-    badgeType: "dark",
-    icon: FiGlobe,
-    href: "/contact?service=nri-services"
-  }
-];
+import ServiceEnquiryModal, { ALL_SERVICES } from "@/components/modals/ServiceEnquiryModal";
 
 export default function FeaturedCategories() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeServiceId, setActiveServiceId] = useState("packers-movers");
+
+  const handleOpenServiceModal = (serviceId: string) => {
+    setActiveServiceId(serviceId);
+    setIsModalOpen(true);
+  };
+
   return (
     <section className="w-full bg-[#F7F5FC] py-14 md:py-20 px-4 sm:px-6 md:px-12 select-none border-t border-purple-100/80">
       <div className="max-w-[1380px] mx-auto w-full">
@@ -88,18 +34,18 @@ export default function FeaturedCategories() {
             </h2>
           </div>
 
-          <Link 
-            href="/contact?type=services" 
+          <button 
+            onClick={() => handleOpenServiceModal("packers-movers")} 
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white text-xs sm:text-sm font-bold shadow-md transition-all hover:scale-105 cursor-pointer"
           >
             <span>Explore All Services</span>
             <FiArrowUpRight className="w-4 h-4 text-amber-400" />
-          </Link>
+          </button>
         </div>
 
         {/* 6 Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {SERVICES.map((service, idx) => {
+          {ALL_SERVICES.map((service, idx) => {
             const IconComponent = service.icon;
             return (
               <motion.div
@@ -109,8 +55,8 @@ export default function FeaturedCategories() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
               >
-                <Link
-                  href={service.href}
+                <div
+                  onClick={() => handleOpenServiceModal(service.id)}
                   className="bg-white border border-purple-100/80 rounded-[28px] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-purple-200 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer"
                 >
                   {/* Top Row: Custom Icon + Badge */}
@@ -121,11 +67,7 @@ export default function FeaturedCategories() {
 
                     {/* Badge */}
                     <span 
-                      className={`px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-xs ${
-                        service.badgeType === "accent"
-                          ? "bg-[#7C3AED] text-white"
-                          : "bg-[#18181B] text-white"
-                      }`}
+                      className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-xs bg-[#18181B] text-white group-hover:bg-[#7C3AED] transition-colors"
                     >
                       <FiStar className="w-3 h-3 text-amber-300 fill-amber-300" />
                       {service.badge}
@@ -142,7 +84,7 @@ export default function FeaturedCategories() {
                     </p>
                   </div>
 
-                  {/* Footer Action Link */}
+                  {/* Footer Action Button */}
                   <div className="pt-4 border-t border-purple-100/80 flex items-center justify-between text-xs font-bold text-[#111827] group-hover:text-[#7C3AED] transition-colors">
                     <span>Avail Service</span>
                     <div className="w-8 h-8 rounded-full bg-[#EAE4FF] text-[#7C3AED] group-hover:bg-[#7C3AED] group-hover:text-white flex items-center justify-center transition-colors">
@@ -150,13 +92,20 @@ export default function FeaturedCategories() {
                     </div>
                   </div>
 
-                </Link>
+                </div>
               </motion.div>
             );
           })}
         </div>
 
       </div>
+
+      {/* Interactive Service Enquiry Modal */}
+      <ServiceEnquiryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialServiceId={activeServiceId}
+      />
     </section>
   );
 }

@@ -93,7 +93,7 @@ export default function LoginPage() {
 
             <div className="text-center text-xs text-[#64748B] mt-6 pt-4 border-t border-purple-100 font-bold">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-[#7C3AED] hover:underline font-extrabold">Join BookUrVisit Now</Link>
+              <Link href="/signup" className="text-[#7C3AED] hover:underline font-extrabold">Join OD Creations Now</Link>
             </div>
             <div className="text-center mt-3">
               <Link href="/agent/login" className="text-[11px] text-[#64748B] hover:text-[#7C3AED] transition-colors font-bold">Agent CRM Login →</Link>
@@ -103,10 +103,10 @@ export default function LoginPage() {
 
         {/* Right Image Showcase */}
         <div className="hidden lg:block lg:col-span-6 relative bg-neutral-900">
-          <Image src="/property-3.png" alt="BookUrVisit Luxury Property" fill className="object-cover" priority />
+          <Image src="/property-3.png" alt="OD Creations Luxury Property" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-[#18181B]/80 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md border border-purple-100/80 rounded-[24px] p-6 text-[#111827] shadow-lg">
-            <span className="text-[10px] font-extrabold text-[#7C3AED] uppercase tracking-wider mb-1 block">BookUrVisit Prime</span>
+            <span className="text-[10px] font-extrabold text-[#7C3AED] uppercase tracking-wider mb-1 block">OD Creations Prime</span>
             <h3 className="text-xl font-bold mb-1">Discover Top Verified Real Estate Options in India</h3>
             <p className="text-xs text-[#64748B] font-normal">0% commission direct owner options and instant home loan assistance.</p>
           </div>

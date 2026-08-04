@@ -23,7 +23,7 @@ const values = [
   {
     icon: FiShield,
     title: "Trust & Legal Audit",
-    desc: "Every property listed on BookUrVisit is legally vetted with clean RERA title deeds before it ever reaches our platform.",
+    desc: "Every property listed on OD Creations is legally vetted with clean RERA title deeds before it ever reaches our platform.",
   },
   {
     icon: FiTrendingUp,
@@ -47,7 +47,7 @@ const team = [
     name: "Vikram Malhotra",
     role: "Founder & CEO",
     image: "/james-r.png",
-    bio: "Former real estate investment banker. Built BookUrVisit to democratise real estate for Indian buyers.",
+    bio: "Former real estate investment banker. Built OD Creations to democratise real estate for Indian buyers.",
   },
   {
     name: "Priya Sharma",
@@ -87,7 +87,7 @@ export default function AboutPage() {
               </motion.h1>
 
               <motion.p {...fadeUp(0.14)} className="text-xs sm:text-sm text-[#64748B] leading-relaxed mb-8 max-w-xl font-normal">
-                BookUrVisit was built on a simple idea — verified Indian real estate should be transparent, accessible, and hassle-free for every home buyer and investor.
+                OD Creations was built on a simple idea — verified Indian real estate should be transparent, accessible, and hassle-free for every home buyer and investor.
               </motion.p>
 
               <motion.div {...fadeUp(0.2)} className="flex flex-wrap gap-4">
@@ -112,7 +112,7 @@ export default function AboutPage() {
               {...fadeUp(0.1)}
               className="lg:col-span-5 relative rounded-[32px] overflow-hidden h-[340px] md:h-[420px] bg-white border border-purple-100/80 shadow-xl"
             >
-              <Image src="/building-facade.png" alt="BookUrVisit HQ" fill className="object-cover" priority />
+              <Image src="/building-facade.png" alt="OD Creations HQ" fill className="object-cover" priority />
               <div className="absolute inset-0 bg-gradient-to-t from-[#18181B]/60 via-transparent to-transparent" />
               <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md rounded-[20px] border border-purple-100/80 shadow-lg p-4 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[#EAE4FF] text-[#7C3AED] flex items-center justify-center flex-shrink-0 font-bold">
@@ -161,7 +161,7 @@ export default function AboutPage() {
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-[#64748B] max-w-sm font-normal">
-              From property verification to deal closures — these values are baked into every layer of BookUrVisit.
+              From property verification to deal closures — these values are baked into every layer of OD Creations.
             </p>
           </div>
 
@@ -198,7 +198,7 @@ export default function AboutPage() {
                 <span>Leadership</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] tracking-tight">
-                The people behind BookUrVisit
+                The people behind OD Creations
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-[#64748B] max-w-sm font-normal">

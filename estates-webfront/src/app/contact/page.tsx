@@ -16,7 +16,7 @@ const channels = [
   {
     icon: FiMail,
     label: "Email Us",
-    value: "support@bookurvisit.in",
+    value: "support@odcreations.com",
     sub: "Response within 24 hours",
   },
   {
@@ -83,7 +83,7 @@ export default function ContactPage() {
           </motion.h1>
 
           <motion.p {...fadeUp(0.14)} className="text-xs sm:text-sm text-[#64748B] max-w-xl leading-relaxed font-normal">
-            Whether you're looking for a new home, scheduling a site visit, or seeking expert advice, our team at BookUrVisit is here to help.
+            Whether you're looking for a new home, scheduling a site visit, or seeking expert advice, our team at OD Creations is here to help.
           </motion.p>
         </div>
       </section>

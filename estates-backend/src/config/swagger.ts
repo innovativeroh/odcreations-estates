@@ -10,7 +10,7 @@ const options: swaggerJsdoc.Options = {
       description: "REST API for the Estates real-estate platform",
     },
     servers: [
-      { url: "https://api.bookurvisit.com", description: "Production" },
+      { url: "https://api.odcreations.com", description: "Production" },
       { url: "http://localhost:4000", description: "Local" },
     ],
     components: {

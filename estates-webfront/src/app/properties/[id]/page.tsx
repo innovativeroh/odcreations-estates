@@ -791,7 +791,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
                     {property.submittedBy?.name || property.contactName || "Listing Advisor"}
                   </h4>
                   <span className="text-xs text-[#7C3AED] font-extrabold">
-                    {property.submittedBy?.agencyName || "BookUrVisit Senior Advisor"}
+                    {property.submittedBy?.agencyName || "OD Creations Senior Advisor"}
                   </span>
                 </div>
               </div>

@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <p className="text-neutral-500 text-sm md:text-base leading-relaxed">
-            At BookUrVisit, we value the trust you place in us when sharing your personal details. This Privacy Policy details how we collect, process, audit, and secure your personal and financial information when utilizing our fractional real estate investment portal.
+            At OD Creations, we value the trust you place in us when sharing your personal details. This Privacy Policy details how we collect, process, audit, and secure your personal and financial information when utilizing our fractional real estate investment portal.
           </p>
 
           <div className="border-t border-neutral-100 my-8" />

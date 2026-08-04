@@ -28,7 +28,7 @@ export default function Footer() {
                 </svg>
                 <div className="flex flex-col">
                   <span className="font-sans font-extrabold text-2xl tracking-tight text-white leading-none whitespace-nowrap">
-                    BookUrVisit
+                    OD Creations
                   </span>
                   <span className="font-sans text-[10px] text-[#7C3AED] tracking-widest font-extrabold mt-0.5 leading-none uppercase whitespace-nowrap">
                     REAL ESTATE
@@ -51,7 +51,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center gap-2">
                   <FiMail className="w-4 h-4 text-[#7C3AED] flex-shrink-0" />
-                  <span>support@bookurvisit.in</span>
+                  <span>support@odcreations.com</span>
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ export default function Footer() {
 
         {/* Bottom Metadata & Legal Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-          <p>© {new Date().getFullYear()} BookUrVisit Real Estate Technologies. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} OD Creations Real Estate Technologies. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-5">
             <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy

@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "BookUrVisit - Premier Real Estate & Property Search in India",
+  title: "OD Creations - Premier Real Estate & Property Search in India",
   description: "India's premier technology-driven real estate platform for buying, renting, and verified property investments.",
 };
 

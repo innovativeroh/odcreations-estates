@@ -62,7 +62,7 @@ export default function CookieSettingsPage() {
             <span className="text-[#ff5a36] font-semibold text-xs mb-3 block tracking-wide uppercase">Preferences Manager</span>
             <h1 className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">Cookie Settings</h1>
             <p className="text-neutral-400 text-xs mt-1.5 leading-relaxed">
-              Customize how BookUrVisit utilizes cookies and data trackers to optimize your fractional real estate investment experience.
+              Customize how OD Creations utilizes cookies and data trackers to optimize your fractional real estate investment experience.
             </p>
           </div>
 

@@ -124,7 +124,7 @@ export default function Header() {
             </svg>
             <div className="flex flex-col text-left">
               <span className="font-sans font-extrabold text-xl tracking-tight text-[#111827] leading-none whitespace-nowrap">
-                BookUrVisit
+                OD Creations
               </span>
               <span className="font-sans text-[10px] text-[#7C3AED] tracking-widest font-extrabold mt-0.5 leading-none uppercase whitespace-nowrap">
                 REAL ESTATE

@@ -32,7 +32,7 @@ export default function TermsOfServicePage() {
           </div>
 
           <p className="text-neutral-500 text-sm md:text-base leading-relaxed">
-            Welcome to BookUrVisit. These Terms & Conditions govern your access to and use of our fractional real estate investment portal, mobile assets interface, and related financial distribution channels.
+            Welcome to OD Creations. These Terms & Conditions govern your access to and use of our fractional real estate investment portal, mobile assets interface, and related financial distribution channels.
           </p>
 
           <div className="border-t border-neutral-100 my-8" />

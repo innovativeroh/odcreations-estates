@@ -42,7 +42,7 @@ export default function SignupPage() {
             <div className="mb-6">
               <div className="flex items-center gap-2 text-xs font-extrabold text-[#7C3AED] uppercase tracking-wider mb-2">
                 <FiZap className="w-4 h-4" />
-                <span>Join BookUrVisit</span>
+                <span>Join OD Creations</span>
               </div>
               <h2 className="text-3xl font-bold text-[#111827] tracking-tight">Create Account</h2>
               <p className="text-xs sm:text-sm text-[#64748B] font-normal mt-1">Register to save listings, receive market trends, and schedule site visits.</p>
@@ -132,7 +132,7 @@ export default function SignupPage() {
 
         {/* Right Image Showcase */}
         <div className="hidden lg:block lg:col-span-6 relative bg-neutral-900">
-          <Image src="/property-4.png" alt="BookUrVisit Luxury Property" fill className="object-cover" priority />
+          <Image src="/property-4.png" alt="OD Creations Luxury Property" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-[#18181B]/80 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md border border-purple-100/80 rounded-[24px] p-6 text-[#111827] shadow-lg">
             <span className="text-[10px] font-extrabold text-[#7C3AED] uppercase tracking-wider mb-1 block">Verified Real Estate</span>

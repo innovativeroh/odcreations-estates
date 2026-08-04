@@ -295,7 +295,7 @@ export default function ChatBot() {
             <div className="px-4 pb-3 bg-white text-center flex-shrink-0">
               <span className="text-[10px] text-neutral-400 font-medium">
                 Powered by{" "}
-                <span className="text-neutral-600 font-semibold">BookUrVisit</span>
+                <span className="text-neutral-600 font-semibold">OD Creations</span>
               </span>
             </div>
           </motion.div>

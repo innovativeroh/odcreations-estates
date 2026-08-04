@@ -38,7 +38,7 @@ const TESTIMONIALS: Testimonial[] = [
     propertyType: "4 BHK Independent Villa",
     stat: "₹2.8 Cr",
     statLabel: "Property Booked",
-    quote: "BookUrVisit made our site visit seamless with free cab pickup. We inspected 5 villas and finalized our dream home in just 10 days with complete legal peace of mind!",
+    quote: "OD Creations made our site visit seamless with free cab pickup. We inspected 5 villas and finalized our dream home in just 10 days with complete legal peace of mind!",
     rating: 5,
     thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80",
     videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-modern-apartment-interior-design-41564-large.mp4",
@@ -52,7 +52,7 @@ const TESTIMONIALS: Testimonial[] = [
     propertyType: "3 BHK High-Rise Apartment",
     stat: "11.4%",
     statLabel: "Annual Rental Yield",
-    quote: "As NRIs in Dubai, managing property purchase remotely felt daunting. BookUrVisit provided live video walkthroughs, full RERA legal audits, and placed tenants immediately.",
+    quote: "As NRIs in Dubai, managing property purchase remotely felt daunting. OD Creations provided live video walkthroughs, full RERA legal audits, and placed tenants immediately.",
     rating: 5,
     thumbnail: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80",
     videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-drone-view-of-modern-skyscrapers-in-a-city-41484-large.mp4",
@@ -93,7 +93,7 @@ export default function VideoTestimonials() {
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-[#64748B] max-w-md font-normal leading-relaxed">
-            Watch verified video reviews from real home buyers and NRI investors who found their ideal properties through BookUrVisit.
+            Watch verified video reviews from real home buyers and NRI investors who found their ideal properties through OD Creations.
           </p>
         </div>
 
