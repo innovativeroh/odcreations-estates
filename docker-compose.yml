@@ -1,0 +1,67 @@
+services:
+
+  backend:
+    build:
+      context: ./estates-backend
+      dockerfile: Dockerfile
+    container_name: estates-backend
+    restart: unless-stopped
+    ports:
+      - "7410:7410"
+    env_file:
+      - ./estates-backend/.env
+    environment:
+      PORT: 7410
+      NODE_ENV: production
+    networks:
+      - estates-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:7410/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  webfront:
+    build:
+      context: ./estates-webfront
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://bookyourvisit-api.samarthh.me
+    container_name: estates-webfront
+    restart: unless-stopped
+    ports:
+      - "7411:7411"
+    environment:
+      NODE_ENV: production
+      PORT: 7411
+      HOSTNAME: "0.0.0.0"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - estates-net
+
+  admin:
+    build:
+      context: ./estates-admin
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://bookyourvisit-api.samarthh.me
+    container_name: estates-admin
+    restart: unless-stopped
+    ports:
+      - "7412:7412"
+    environment:
+      NODE_ENV: production
+      PORT: 7412
+      HOSTNAME: "0.0.0.0"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - estates-net
+
+networks:
+  estates-net:
+    driver: bridge

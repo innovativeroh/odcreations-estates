@@ -1,0 +1,19 @@
+{
+  "name": "estates",
+  "private": true,
+  "workspaces": [
+    "estates-backend",
+    "estates-webfront",
+    "estates-admin"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.6"
+  },
+  "packageManager": "npm@11.13.0"
+}

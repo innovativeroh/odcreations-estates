@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode */
+  --background: #f8f9fa;
+  --foreground: #18181b;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.05);
+  
+  --input-bg: #ffffff;
+  --input-border: rgba(0, 0, 0, 0.08);
+  
+  --text-title: #09090b;
+  --text-body: #27272a;
+  --text-muted: #71717a;
+  --text-sub: #a1a1aa;
+  
+  --brand: #ff5a36;
+  --brand-light: rgba(255, 90, 54, 0.08);
+  --brand-hover: #e64b27;
+  
+  --sidebar-bg: #09090b;
+  --sidebar-border: rgba(255, 255, 255, 0.04);
+}
+
+.dark {
+  /* Dark Mode */
+  --background: #050507;
+  --foreground: #f4f4f6;
+  --card-bg: rgba(10, 10, 12, 0.5);
+  --card-border: rgba(255, 255, 255, 0.04);
+  
+  --input-bg: rgba(24, 24, 28, 0.6);
+  --input-border: rgba(255, 255, 255, 0.04);
+  
+  --text-title: #ffffff;
+  --text-body: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-sub: #71717a;
+  
+  --sidebar-bg: #07070a;
+  --sidebar-border: rgba(255, 255, 255, 0.04);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  
+  --color-input-bg: var(--input-bg);
+  --color-input-border: var(--input-border);
+  
+  --color-txt-title: var(--text-title);
+  --color-txt-body: var(--text-body);
+  --color-txt-muted: var(--text-muted);
+  --color-txt-sub: var(--text-sub);
+  
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
+  --color-brand-hover: var(--brand-hover);
+  
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Subtle Architectural Grid Pattern */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(currentColor 1px, transparent 1px),
+    linear-gradient(90deg, currentColor 1px, transparent 1px);
+  background-size: 54px 54px;
+}
+
+.font-playfair {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 99px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 90, 54, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 90, 54, 0.05);
+}
+
+/* Table styling for theme support */
+.dark-table-row {
+  border-bottom: 1px solid var(--card-border);
+  transition: background-color 0.2s ease;
+}
+
+.dark-table-row:hover {
+  background-color: rgba(255, 90, 54, 0.015);
+}
