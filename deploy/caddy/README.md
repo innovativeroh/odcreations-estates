@@ -1,118 +1,112 @@
 # TLS + reverse proxy on the VPS
 
-The VPS reverse proxy is **Caddy**, not nginx — Caddy binds `:80` and `:443`,
-so nginx cannot start alongside it. All three estates services are proxied by
-`bookyourvisit.caddy`.
+Host: `storentia-prod` (`45.195.159.70`). Deploy dir:
+`/var/www/bookurvisit/odcreations-estates`.
 
-Certs come from **certbot via DNS-01**. Two reasons the usual paths don't work
-here:
+## Do not disable nginx
 
-- `certbot --nginx` / `--standalone` need to own port 80. Caddy has it.
-- The domain is behind the Cloudflare proxy (orange cloud), which terminates
-  TLS at the edge. That breaks TLS-ALPN-01 and is why Caddy's own automatic
-  issuance fails — the symptom is a Cloudflare **525 SSL handshake failed**.
+**Caddy is the edge** — it owns `:80` and `:443` and terminates TLS for
+everything. **nginx is not idle**: it listens on `127.0.0.1:8081` and Caddy
+reverse-proxies `techsolace.in`, `cdn.techsolace.in`, `apis.storentia.com`, and
+`dashboard.storentia.com` to it.
 
-DNS-01 avoids both and yields a wildcard, so one cert covers all three
-hostnames and anything added later.
+Stopping or disabling nginx takes all of those offline while Caddy keeps
+answering — you get a live edge proxying to nothing. If nginx fails to start
+with an "address already in use" error, the cause is a vhost that declares
+`listen 80` or `listen 443`; fix that vhost, never disable the service.
 
-## One-time setup
+The estates services are proxied by Caddy directly to their published container
+ports and do not involve nginx at all.
 
-### 1. Cloudflare API token
+## Layout
 
-Cloudflare dashboard → My Profile → API Tokens → Create Token → **Edit zone
-DNS** template → Zone Resources: `samarthh.me`. Copy the token.
+`/etc/caddy/Caddyfile` is a single monolithic file — there is no `sites/`
+directory and no `import`. The estates config lives at the end of it, and
+`bookyourvisit.caddy` in this repo is the reference copy of that section.
 
-```bash
-sudo apt install -y certbot python3-certbot-dns-cloudflare
+| Hostname | Origin | Container |
+|---|---|---|
+| `bookyourvisit-api.samarthh.me` | `127.0.0.1:7410` | `estates-backend` |
+| `bookyourvisit.samarthh.me` | `127.0.0.1:7411` | `estates-webfront` |
+| `bookyourvisit-admin.samarthh.me` | `127.0.0.1:7412` | `estates-admin` |
 
-sudo mkdir -p /etc/letsencrypt
-sudo tee /etc/letsencrypt/cloudflare.ini >/dev/null <<'EOF'
-dns_cloudflare_api_token = PASTE_TOKEN_HERE
-EOF
-sudo chmod 600 /etc/letsencrypt/cloudflare.ini
-```
+## TLS
 
-The token is zone-scoped to DNS edits only — it cannot touch the proxy,
-firewall, or other zones.
+These hostnames are behind the Cloudflare proxy (orange cloud). Cloudflare
+terminates browser TLS, then opens its own connection to this origin. That
+breaks ACME TLS-ALPN-01, so Caddy cannot auto-issue for them — the symptom is a
+Cloudflare **525 SSL handshake failed**.
 
-### 2. Issue the wildcard
+Current setup: `tls internal` (Caddy's self-signed cert) with Cloudflare SSL
+mode **`Full`**. Cloudflare is the only client on that hop and `Full` does not
+verify the origin cert, so the traffic is encrypted end to end without any cert
+plumbing.
 
-```bash
-sudo certbot certonly \
-  --dns-cloudflare \
-  --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini \
-  --dns-cloudflare-propagation-seconds 30 \
-  -d samarthh.me -d '*.samarthh.me'
-```
+Mode matters:
 
-Quote `'*.samarthh.me'` — an unquoted `*` is glob-expanded by the shell.
+| CF mode | Result |
+|---|---|
+| Flexible | Plaintext to origin, redirect loop. Broken. |
+| **Full** | **What we use. Works.** |
+| Full (strict) | Rejects the self-signed cert → 526. |
 
-### 3. Let Caddy read the certs
+### Upgrading to Full (strict)
 
-Caddy drops privileges to the `caddy` user, but `/etc/letsencrypt/{live,archive}`
-are root-only `0700`. Without this it fails to load the cert at startup.
+Optional hardening, not required. Either:
 
-```bash
-sudo apt install -y acl
-sudo setfacl -R  -m u:caddy:rX /etc/letsencrypt/live /etc/letsencrypt/archive
-sudo setfacl -dR -m u:caddy:rX /etc/letsencrypt/live /etc/letsencrypt/archive
-```
+- **Cloudflare Origin Certificate** — dashboard → SSL/TLS → Origin Server →
+  Create Certificate for `samarthh.me, *.samarthh.me`. Write the two blocks to
+  `/etc/ssl/cloudflare/`, `chown caddy:caddy`, `chmod 640` the key, then swap
+  the `estates_tls` snippet to point at them. 15-year validity, no renewal.
+- **certbot DNS-01** — `python3-certbot-dns-cloudflare` with a token scoped to
+  the `samarthh.me` zone (needs Zone:Read *and* DNS:Edit; a token missing
+  Zone:Read fails with `6003 Invalid request headers`). Requires a `setfacl`
+  grant so the `caddy` user can read `/etc/letsencrypt/{live,archive}`, plus a
+  deploy hook to `systemctl reload caddy`.
 
-The second line sets the *default* ACL, so renewals inherit it.
+HTTP-01 and `--nginx` do not work here: Caddy holds port 80, and nginx is on
+8081 where ACME cannot reach it.
 
-### 4. Reload Caddy on renewal
-
-Certbot's timer renews silently; Caddy keeps serving the old cert until told
-otherwise.
-
-```bash
-sudo tee /etc/letsencrypt/renewal-hooks/deploy/reload-caddy.sh >/dev/null <<'EOF'
-#!/bin/sh
-systemctl reload caddy
-EOF
-sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-caddy.sh
-```
-
-### 5. Install the site config
+## Deploy
 
 ```bash
-grep -n import /etc/caddy/Caddyfile   # check for an existing sites import
-sudo mkdir -p /etc/caddy/sites
-sudo cp deploy/caddy/bookyourvisit.caddy /etc/caddy/sites/
-sudo caddy validate --config /etc/caddy/Caddyfile
-sudo systemctl reload caddy
+ssh storentia-prod
+cd /var/www/bookurvisit/odcreations-estates
+git pull
+docker compose up -d --build
+docker compose ps
 ```
 
-If `/etc/caddy/Caddyfile` has no `import sites/*`, add that line, or append
-this file's contents to it directly.
+Webfront and admin wait on the backend healthcheck — allow ~45s.
 
-### 6. Cloudflare SSL mode
+After editing `/etc/caddy/Caddyfile`:
 
-SSL/TLS → Overview → **Full (strict)**. Not Flexible — Flexible sends plaintext
-to port 80 and loops against Caddy's HTTPS redirect.
+```bash
+sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%F-%H%M)
+sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
+```
 
 ## Verify
 
-Bypassing Cloudflare, from the VPS:
+Origin, bypassing Cloudflare. Use `--resolve`, not `-H "Host:"` — the latter
+does not set SNI, so Caddy falls through to the on-demand catch-all and the
+handshake fails with a misleading `000`:
 
 ```bash
-curl -sk https://127.0.0.1/health -H "Host: bookyourvisit-api.samarthh.me"
-curl -sk https://127.0.0.1 -H "Host: bookyourvisit.samarthh.me" -o /dev/null -w '%{http_code}\n'
+curl -sk --resolve bookyourvisit-api.samarthh.me:443:127.0.0.1 \
+  https://bookyourvisit-api.samarthh.me/health
 ```
 
-Renewal dry run:
+Public:
 
 ```bash
-sudo certbot renew --dry-run
-systemctl list-timers | grep certbot
+for u in https://bookyourvisit-api.samarthh.me/health \
+         https://bookyourvisit.samarthh.me \
+         https://bookyourvisit-admin.samarthh.me \
+         https://techsolace.in \
+         https://dashboard.storentia.com; do
+  printf "%-48s %s\n" "$u" "$(curl -s -o /dev/null -w '%{http_code}' "$u")"
+done
 ```
 
-## Disable nginx
-
-It can never bind while Caddy runs; leaving it enabled just produces failed
-units on every boot.
-
-```bash
-sudo rm -f /etc/nginx/sites-enabled/bookyourvisit.conf
-sudo systemctl disable --now nginx
-```
+Expected: `200`, `200`, `307` (login redirect), `200`, `200`.
